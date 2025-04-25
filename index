@@ -1,21 +1,27 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define MAX 5
 #define TAM_NOME 20
 
-char jogadores[MAX][TAM_NOME];
+
+typedef struct {
+    char nome[TAM_NOME];
+} Jogador;
+
+Jogador jogadores[MAX];
 int total_jogadores = 0;
 
 void entrarNaFila(const char* nome) {
     if (total_jogadores < MAX) {
-        strcpy(jogadores[total_jogadores], nome);
+        strcpy(jogadores[total_jogadores].nome, nome);
         total_jogadores++;
     }
 }
 
 void proximoTurno() {
-    printf("\nVez de: %s\n", jogadores[0]);
+    printf("\nVez de: %s\n", jogadores[0].nome);
     printf("Pressione ENTER para encerrar o turno (ou digite 'uno' para encerrar o jogo)...\n");
 
     char input[10];
@@ -26,14 +32,14 @@ void proximoTurno() {
         exit(0);  
     }
 
-    char temp[TAM_NOME];
-    strcpy(temp, jogadores[0]);
+    Jogador temp = jogadores[0];
 
+    // Shiftando os jogadores para a esquerda
     for (int i = 0; i < total_jogadores - 1; i++) {
-        strcpy(jogadores[i], jogadores[i + 1]);
+        jogadores[i] = jogadores[i + 1];
     }
 
-    strcpy(jogadores[total_jogadores - 1], temp);
+    jogadores[total_jogadores - 1] = temp;
 }
 
 int main() {
@@ -49,5 +55,5 @@ int main() {
         rodada++;
     }
 
-    return 0;
+return 0;
 }
